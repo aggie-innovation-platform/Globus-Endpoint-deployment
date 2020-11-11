@@ -1,0 +1,4 @@
+---
+#globus-auth
+globus_username: Globus Username goes here.
+globus_password: Globus Password goes here.

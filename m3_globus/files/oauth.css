@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css?family=Helvetica+Neue');
+
+* {
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#header {
+    min-height: 64px;
+    background: url("headerbg.png") repeat scroll 0 0 transparent;
+    margin: 0 auto;
+    padding:4px 0 0 10px;
+    background: #fff;
+    clear: both;
+}
+
+#logo {
+    margin-left: 6px;
+    display: inline;
+    float: left;
+    width: 320px;
+    height: 90px;
+    background-image: url("massive_logo.png");
+    background-size: contain;
+    background-repeat: no-repeat
+}
+
+#title {
+    margin-right: 30px;
+    height: 64px;
+    display: inline;
+    float: right;
+    line-height: 64px;
+    font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 1.5em;
+    color: #FFFFFF;
+}
+#main {
+    width: 960px;
+    min-height: 500px;
+    padding-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#topic {
+    margin-top: 30px;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    border-bottom: 1px solid #CCC;
+    width: 780px;
+    position: relative;
+}
+#message {
+    width: 500px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 40px;
+}
+body {
+    font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    color: #333;
+}
+h1 {
+    display: inline;
+    font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
+    font-weight: normal;
+}
+table {
+    margin: auto;
+}
+th {
+    padding: 5px;
+    font-weight: bold;
+    text-align: left;
+}
+td {
+    padding: 5px;
+}
+input[type="submit"] {
+    background: #5F8DC6;
+    color: white;
+    text-shadow: 1px 1px 1px #666;
+    gradient(top, #709FD8 0%, #649EE2 58%, #5F8DC6 100%);
+    background-image: linear-gradient(top, #709FD8 0%, #649EE2 58%, #5F8DC6 100%);
+    border: 1px solid #4C80C0;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
+    font-size: 1.0em;
+    font-weight: normal;
+    margin: 0 5px 0 0;
+    padding: 4px 10px 5px;
+    vertical-align: middle;
+}
