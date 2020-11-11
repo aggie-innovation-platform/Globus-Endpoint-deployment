@@ -1,7 +1,7 @@
 Globus Endpoint Deployment
 ==========================
 
-This role performs a deployment of Globus Connect Server 4. The setup
+This Ansible role performs a deployment of Globus Connect Server 4. The setup
 is configured to use MyProxy OAuth for authentication and the accompanying OAuth
 page has been customised with a MASSIVE logo and text. These could easily be
 adjusted for you own site.
@@ -12,6 +12,7 @@ This role installs Globus MyProxy, MyProxyOAuth and Globus GridFTP
 Let's Encrypt's CertBot is used to obtain SSL certificates for Apache.
 
 The role was developed using these instructions: https://docs.globus.org/globus-connect-server/v4/#introduction
+For information on using Ansible: https://docs.ansible.com/ansible/latest/index.html
 
 Requirements
 ------------
