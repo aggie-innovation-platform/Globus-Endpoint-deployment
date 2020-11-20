@@ -49,6 +49,30 @@ The following variables should be set prior to running the role.
   - globus_username: username
   - globus_password: password
 
+> NOTE: the variable ```globus_password``` should be encrypted using
+> ```ansible-vault``` when setting up this role. This will ensure that the
+> password is not accidentally shared.
+>
+> To encrypt your globus password: ```ansible-vault encrypt-string yourPasswordGoesHere```
+>
+> When prompted enter the password to encrypt the string.
+> The output is the encrypted Globus password.
+> Copy this into globus-auth.yml
+>
+> It should look like this.
+>
+```
+globus_password: !vault |
+                 $ANSIBLE_VAULT;1.1;AES256
+                 66386449653236336462626566653063336164663966303231363934653561363064363833313662
+                 6643162536303530376336343832656537303632313433360a626438346336353331386135323734
+                 62656361653630373231613662633962316233633936396165386439616533353965373339616234
+                 3430613539666330390a313736323265656432366236633330313963326365653937323833366536
+                 34623731376664623134383463316265643436343438623266623965636363326136
+```
+> When running the playbook, use the option ```--ask-vault-pass```. This will
+> prompt Ansible to ask for the password to decrypt your Globus password. 
+
 - vars/globus-connect-server.yml
   - endpoint_Name: Name for your endpoint. e.g. MASSIVE
   - endpoint_Public: (True or False) Should the endpoint be publicly visible ?
@@ -65,6 +89,13 @@ The following variables should be set prior to running the role.
 
 Example Playbook
 ----------------
+
+To run the playbook:
+
+> ansible-playbook --verbose globus_role.yml --ask-vault-pass
+
+You will be prompted to enter the password for ansible-vault.
+This will allow Ansible to decrypt the 'globus_password' during installation.
 
 ```
 ---
