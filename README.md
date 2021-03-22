@@ -89,10 +89,10 @@ globus_password: !vault |
   - sharing_enable: (True or False) Sharing can only be used if you are a Globus subscriber
   - sharing_RestrictPaths: (Just like gridftp_RestrictPaths above)
   - sharing_StateDir: $HOME/.globus/sharing (The directory Globus uses to manage sharing states for a user)
-  - sharing_UsersAllow: "Comma separated list of users and or groups"
-  - sharing_GroupsAllow: "Comma separated list of users and or groups"
-  - sharing_UsersDeny: "Comma separated list of users and or groups"
-  - sharing_GroupsDeny: "Comma separated list of users and or groups"  
+  - sharing_UsersAllow: "Comma separated list of users"
+  - sharing_GroupsAllow: "Comma separated list of groups"
+  - sharing_UsersDeny: "Comma separated list of users"
+  - sharing_GroupsDeny: "Comma separated list of groups"  
 
   Note: To use Sharing, your Globus Endpoint needs to be 'managed' under a Globus subscription.
 
