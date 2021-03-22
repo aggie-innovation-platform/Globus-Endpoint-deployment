@@ -177,6 +177,7 @@ RequireEncryption = {{ gridftp_RequireEncryption }}
 ; managed endpoint associated with a Globus subscription uuid. Additional
 ; configuration must be done using the endpoint-manage globus cli command.
 ;; Sharing = True
+Sharing = {{ sharing_enable }}
 
 ; ------------------------
 ; ADVANCED SHARING OPTIONS
@@ -185,7 +186,7 @@ RequireEncryption = {{ gridftp_RequireEncryption }}
 ; Using the same syntax as RestrictPaths above, this defines additional
 ; restrictions which paths that sharing clients may access.
 ;; SharingRestrictPaths =
-
+SharingRestrictPaths = {{ sharing_RestrictPaths }}
 
 ; Path of a directory where GridFTP will store files used to control
 ; sharing access to individual accounts.  The variables $USER and $HOME
@@ -197,7 +198,7 @@ RequireEncryption = {{ gridftp_RequireEncryption }}
 ; name "/var/globusonline/sharing/bob/" and is writable by bob.
 ;
 ;;SharingStateDir =
-
+SharingStateDir = {{ sharing_StateDir }}
 
 ; Allow or Deny sharing for specific users or groups.
 ; Each option takes a comma separated list of user or group names.
@@ -214,6 +215,10 @@ RequireEncryption = {{ gridftp_RequireEncryption }}
 ;;
 ;; SharingUsersDeny =
 ;; SharingGroupsDeny =
+SharingUsersAllow = {{ sharing_UsersAllow }}
+SharingGroupsAllow = {{ sharing_GroupsAllow }}
+SharingUsersDeny = {{ sharing_UsersDeny }}
+SharingGroupsDeny = {{ sharing_GroupsDeny  }}
 
 ;-----------------------------------------------------------------------------
 ;                            MyProxy Configuration                           ;

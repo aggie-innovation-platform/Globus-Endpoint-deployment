@@ -14,3 +14,10 @@ myproxy_Server: YourDomainName
 myproxy_ServerBehindNAT: True
 oauth_Server: YourDomainName
 oauth_ServerBehindNAT: True
+sharing_enable: True
+sharing_RestrictPaths:
+sharing_StateDir: $HOME/.globus/sharing
+sharing_UsersAllow:
+sharing_GroupsAllow:
+sharing_UsersDeny:
+sharing_GroupsDeny: 

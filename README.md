@@ -53,7 +53,7 @@ The following variables should be set prior to running the role.
 > ```ansible-vault``` when setting up this role. This will ensure that the
 > password is not accidentally shared.
 >
-> To encrypt your globus password: ```ansible-vault encrypt-string yourPasswordGoesHere```
+> To encrypt your globus password: ```ansible-vault encrypt_string yourPasswordGoesHere```
 >
 > When prompted enter the password to encrypt the string.
 > The output is the encrypted Globus password.
@@ -71,7 +71,7 @@ globus_password: !vault |
                  34623731376664623134383463316265643436343438623266623965636363326136
 ```
 > When running the playbook, use the option ```--ask-vault-pass```. This will
-> prompt Ansible to ask for the password to decrypt your Globus password. 
+> prompt Ansible to ask for the password to decrypt your Globus password.
 
 - vars/globus-connect-server.yml
   - endpoint_Name: Name for your endpoint. e.g. MASSIVE
@@ -86,6 +86,15 @@ globus_password: !vault |
   - myproxy_ServerBehindNAT: True
   - oauth_Server: Should be the same as 'hostname'.
   - oauth_ServerBehindNAT: True
+  - sharing_enable: (True or False) Sharing can only be used if you are a Globus subscriber
+  - sharing_RestrictPaths: (Just like gridftp_RestrictPaths above)
+  - sharing_StateDir: $HOME/.globus/sharing (The directory Globus uses to manage sharing states for a user)
+  - sharing_UsersAllow: "Comma separated list of users and or groups"
+  - sharing_GroupsAllow: "Comma separated list of users and or groups"
+  - sharing_UsersDeny: "Comma separated list of users and or groups"
+  - sharing_GroupsDeny: "Comma separated list of users and or groups"  
+
+  Note: To use Sharing, your Globus Endpoint needs to be 'managed' under a Globus subscription.
 
 Example Playbook
 ----------------
