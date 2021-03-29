@@ -34,13 +34,33 @@ A DNS entry is required before installing this role.
 
 An account on https://globus.org is required for installation. This could be a Globus ID account, or any of the other supported authentication methods. e.g. Google, ORCiD iD
 
+Example Inventory and Playbook
+------------------------------
+
+This repository contains a sample Ansible inventory and playbook.
+
+The inventory file `globusinventory` is setup to create 2 endpoints.
+
+ - 'globus.example.edu.au' On this machine the main globus endpoint is configured with MyProxy OAuth for authentication. As configured in this example an endpoint known as 'globus_username#example' is created.
+ - 'globusresearchnetwork' has been created to support a different network interface. This endpoint relies on 'globus.example.edu.au' for authentication. e.g. you have a collection of big data producing instruments on a private network but wish to use Globus to push data on the high speed private network to the same storage infrastructure as connected to 'globus.example.edu.au'. As configured in this example an endpoint known as 'globus_username#researchnetwork' is created.
+
+> NOTE: In m3_globus/tasks/main.yml a python script 'm3_globus/files/mellanox_ip_address.py' is used to calculate the IP for the DataInterface used in building the 'reseachnetwork' endpoint. This logic will need to be altered to reflect how infrastucurre is deployed at your site.
+
+To run the playbook to build both Globus endpoints:
+
+> ansible-playbook  -i globusinventory -l GlobusNodes -t m3_globus globusnodes.yml --ask-vault-pass
+
+You will be prompted to enter the password for ansible-vault.
+This will allow Ansible to decrypt the 'globus_password' during installation.
+
+To run the playbook to just build the globus.example.edu.au endpoint:
+
+> ansible-playbook  -i globusinventory -l globus.example.edu.au -t m3_globus globusnodes.yml --ask-vault-pass
+
 Role Variables
 --------------
 
 The following variables should be set prior to running the role.
-
-- vars/host.yml - Used to ensure the hostname of the machine is set correctly.
-  - hostname: Your hostname. e.g. globus.example.edu.au
 
 - vars/certbot.yml - Let's Encrypt Certbot configuration
   - certbot_email: contact email address for Let's Encrypt
@@ -74,55 +94,30 @@ globus_password: !vault |
 > prompt Ansible to ask for the password to decrypt your Globus password.
 
 - vars/globus-connect-server.yml
-  - endpoint_Name: Name for your endpoint. e.g. MASSIVE
   - endpoint_Public: (True or False) Should the endpoint be publicly visible ?
   - security_IdentityMethod: OAuth (leave as is but could be 'MyProxy')
-  - gridftp_Server: Should be the same as 'hostname'.
+  - gridftp_Server: Domain name for the machine where Globus will be installed.
   - gridftp_ServerBehindNAT: True
-  - gridftp_DataInterface: Should be the same as 'hostname'.
   - gridftp_RestrictPaths: RW~,RW/scratch,RW/projects,RW/fs03
   - gridftp_RequireEncryption: (True or False) Depending on the sensitivity of your data encryption might be required.  
-  - myproxy_Server: Should be the same as 'hostname'.
+  - myproxy_Server: Should be the same domain name.
   - myproxy_ServerBehindNAT: True
-  - oauth_Server: Should be the same as 'hostname'.
+  - oauth_Server: Should be the same domain name.
   - oauth_ServerBehindNAT: True
   - sharing_enable: (True or False) Sharing can only be used if you are a Globus subscriber
-  - sharing_RestrictPaths: (Just like gridftp_RestrictPaths above)
+  - sharing_RestrictPaths: R/ (e.g. readonly for the whole filesystem)
   - sharing_StateDir: $HOME/.globus/sharing (The directory Globus uses to manage sharing states for a user)
   - sharing_UsersAllow: "Comma separated list of users"
   - sharing_GroupsAllow: "Comma separated list of groups"
   - sharing_UsersDeny: "Comma separated list of users"
   - sharing_GroupsDeny: "Comma separated list of groups"  
 
-  Note: To use Sharing, your Globus Endpoint needs to be 'managed' under a Globus subscription.
+  Note: To use Sharing, your Globus Endpoint needs to be 'managed' under a Globus subscription. Please refer to the Globus Connect Server installation notes on 'Sharing' for a full explanation.
 
-Example Playbook
-----------------
-
-To run the playbook:
-
-> ansible-playbook --verbose globus_role.yml --ask-vault-pass
-
-You will be prompted to enter the password for ansible-vault.
-This will allow Ansible to decrypt the 'globus_password' during installation.
-
-```
----
-- name: Deploy Globus
-  hosts: globus-test
-  become: true
-
-  pre_tasks:
-    - debug:
-        msg: 'Beginning Globus configuration.'
-
-  roles:
-    - m3_globus
-
-  post_tasks:
-    - debug:
-        msg: 'Globus has been configured.'
-```
+The files will need customising for your site:
+- m3_globus/files/authorize.html (update for your site)
+- m3_globus/files/massive_logo.png (replace with your logo)
+- m3_globus/files/oauth.css (update for your site)
 
 Author Information
 ------------------

@@ -1,0 +1,5 @@
+
+- hosts: 'GlobusNodes'
+  gather_facts: False
+  roles:
+  - { role: m3_globus, tags: [ m3_globus ] }

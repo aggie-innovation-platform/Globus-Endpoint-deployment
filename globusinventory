@@ -1,0 +1,23 @@
+#!/bin/bash
+echo '{
+    "GlobusNodes": [
+        "globus.example.edu.au",
+        "globusresearchnetwork"
+    ],
+    "_meta": {
+        "hostvars": {
+            "globus.example.edu.au": {
+                "ansible_host": "Put host IP here",
+                "ansible_user": "Put user here",
+                "authorising_endpoint": "True",
+                "endpoint_Name": "example"
+            },
+            "globusresearchnetwork": {
+                "ansible_host": "Put host IP here",
+                "ansible_user": "Put user here",
+                "authorising_endpoint": "False",
+                "endpoint_Name": "researchnetwork"
+            },
+        }
+    }
+}'

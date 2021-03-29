@@ -1,11 +1,10 @@
-- include_vars: host.yml
 - include_vars: globus-auth.yml
 - include_vars: globus-connect-server.yml
 - include_vars: certbot.yml
 
 - name: Ensure the hostname is set
   hostname:
-    name: "{{ hostname }}"
+    name: "{{ inventory_hostname }}"
   become: yes
   become_user: root
 
@@ -74,6 +73,23 @@
   become: yes
   become_user: root
 
+# If researchnetwork, get the mellanox IP for the DataInterface
+- name: get the mellanox ip IP address
+  script: mellanox_ip_address.py {{ hostvars[inventory_hostname]['ansible_all_ipv4_addresses']  | to_json | quote }}
+  register: mellanox_ip_address_command
+  check_mode: no
+  changed_when: False
+  when: endpoint_Name == "researchnetwork"
+
+- name: set DataInterface
+  set_fact: gridftp_DataInterface={{ mellanox_ip_address_command.stdout | from_json | json_query('ip') }}
+  when: endpoint_Name == "researchnetwork"
+
+# When the endpoint is not "researchnetwork" use the hostname
+- name: set DataInterface
+  set_fact: gridftp_DataInterface={{ inventory_hostname }}
+  when: endpoint_Name != "researchnetwork"
+
 # Copy in globus-connect-server.conf
 - name: install the config file
   template:
@@ -101,6 +117,9 @@
 #   become: yes
 #   become_user: root
 
+#Only install CertBot for the main authorising endpoint. e.g. SSLs are needed
+#for Apache so the user can authenticate.
+
 - name: Install snapd
   yum:
     name: snapd
@@ -108,6 +127,7 @@
     enablerepo: epel
   become: yes
   become_user: root
+  when: authorising_endpoint == 'True'
 
 - name: Enable snapd.
   service:
@@ -116,6 +136,7 @@
     enabled: yes
   become: yes
   become_user: root
+  when: authorising_endpoint == 'True'
 
 - name: symlink for classic snap
   file:
@@ -124,6 +145,7 @@
     state: link
   become: yes
   become_user: root
+  when: authorising_endpoint == 'True'
 
 - name: Install certbot (classic)
   snap:
@@ -131,6 +153,7 @@
     classic: yes
   become: yes
   become_user: root
+  when: authorising_endpoint == 'True'
 
 # Update ssl.conf as per the Mozilla configurator. https://ssl-config.mozilla.org/
 # Add virtual host to apache ssl.conf for CertBot configuration
@@ -138,24 +161,32 @@
   template: src=ssl.conf.j2 dest=/etc/httpd/conf.d/ssl.conf owner=root mode=644
   become: yes
   become_user: root
+  when: authorising_endpoint == 'True'
 
 - name: setting ServerName for Apache. Required for CertBot
   replace:
     path: /etc/httpd/conf/httpd.conf
     regexp: '(#ServerName www.example.com:80)'
-    replace: 'ServerName {{ hostname }}'
+    replace: 'ServerName {{ inventory_hostname }}'
+  become: yes
+  become_user: root
+  when: authorising_endpoint == 'True'
 
 - name: Disable welcome message
   replace:
     path: /etc/httpd/conf.d/welcome.conf
     regexp: '(    ErrorDocument 403 /.noindex.html)'
     replace: '#    ErrorDocument 403 /.noindex.html'
+  become: yes
+  become_user: root
+  when: authorising_endpoint == 'True'
 
 #Setup certbot for Apache
 - name: Setup Let's Encrypt SSL certificates for Apache
-  command: "/snap/bin/certbot -d {{ hostname }} --apache  -n -m {{ certbot_email }} --agree-tos"
+  command: "/snap/bin/certbot -d {{ inventory_hostname }} --apache  -n -m {{ certbot_email }} --agree-tos"
   become: yes
   become_user: root
+  when: authorising_endpoint == 'True'
 
 # Setup logrotate for transfers, track who transfers what
 - name: Configure transfer log for gridftp
@@ -183,9 +214,11 @@
   with_items:
    - { From: '(/var/log/gridftp.log)', To: '/var/log/gridftp.log /var/log/gridftp_transfer.log'}
    - { From: '(postrotate)', To: '(sharedscripts\n   postrotate)'}
+  become: yes
+  become_user: root
 
-# Setup OAuth login page for MASSIVE
-- name: copy authorize.html for MASSIVE branding
+# Setup OAuth login page for Example.edu.au
+- name: copy authorize.html for Example.edu.au branding
   copy:
     dest=/usr/share/myproxy-oauth/myproxyoauth/templates/authorize.html
     src=authorize.html
@@ -193,8 +226,9 @@
     mode=644
   become: yes
   become_user: root
+  when: authorising_endpoint == 'True'
 
-- name: copy oauth.css for MASSIVE branding
+- name: copy oauth.css for Example.edu.au branding
   copy:
     dest=/usr/share/myproxy-oauth/myproxyoauth/static/oauth.css
     src=oauth.css
@@ -202,8 +236,9 @@
     mode=644
   become: yes
   become_user: root
+  when: authorising_endpoint == 'True'
 
-- name: copy massive_logo.png for MASSIVE branding
+- name: copy Your_logo.png for Example.edu.au branding
   copy:
     dest=/usr/share/myproxy-oauth/myproxyoauth/static/massive_logo.png
     src=massive_logo.png
@@ -211,3 +246,4 @@
     mode=644
   become: yes
   become_user: root
+  when: authorising_endpoint == 'True'
