@@ -42,9 +42,9 @@ This repository contains a sample Ansible inventory and playbook.
 The inventory file `globusinventory` is setup to create 2 endpoints.
 
  - 'globus.example.edu.au' On this machine the main globus endpoint is configured with MyProxy OAuth for authentication. As configured in this example an endpoint known as 'globus_username#example' is created.
- - 'globusresearchnetwork' has been created to support a different network interface. This endpoint relies on 'globus.example.edu.au' for authentication. e.g. you have a collection of big data producing instruments on a private network but wish to use Globus to push data on the high speed private network to the same storage infrastructure as connected to 'globus.example.edu.au'. As configured in this example an endpoint known as 'globus_username#researchnetwork' is created.
+ - 'globusresearchnetwork' has been created to support a different network interface. This endpoint relies on 'globus.example.edu.au' for authentication. e.g. you have a collection of big data producing instruments on a private network. You wish to use Globus to push data on a high speed private network to the same storage infrastructure as connected to 'globus.example.edu.au'. As configured in this example an endpoint known as 'globus_username#researchnetwork' is created.
 
-> NOTE: In m3_globus/tasks/main.yml a python script 'm3_globus/files/mellanox_ip_address.py' is used to calculate the IP for the DataInterface used in building the 'reseachnetwork' endpoint. This logic will need to be altered to reflect how infrastucurre is deployed at your site.
+> NOTE: In m3_globus/tasks/main.yml a python script 'm3_globus/files/mellanox_ip_address.py' is used to calculate the IP for the DataInterface used in building the 'reseachnetwork' endpoint. This logic will need to be altered to reflect how infrastructure is deployed at your site.
 
 To run the playbook to build both Globus endpoints:
 
@@ -114,7 +114,7 @@ globus_password: !vault |
 
   Note: To use Sharing, your Globus Endpoint needs to be 'managed' under a Globus subscription. Please refer to the Globus Connect Server installation notes on 'Sharing' for a full explanation.
 
-The files will need customising for your site:
+These files will need customising for your site:
 - m3_globus/files/authorize.html (update for your site)
 - m3_globus/files/massive_logo.png (replace with your logo)
 - m3_globus/files/oauth.css (update for your site)
