@@ -4,14 +4,13 @@
 endpoint_Public: True
 
 security_IdentityMethod: OAuth
-gridftp_Server: YourDomainName
 gridftp_ServerBehindNAT: True
 gridftp_RestrictPaths: RW~,RW/scratch,RW/projects,RW/fs03
 gridftp_RequireEncryption: False
 myproxy_Server: YourDomainName
-myproxy_ServerBehindNAT: True
+#myproxy_ServerBehindNAT: True
 oauth_Server: YourDomainName
-oauth_ServerBehindNAT: True
+#oauth_ServerBehindNAT: True
 sharing_enable: True
 sharing_RestrictPaths: R/
 sharing_StateDir: $HOME/.globus/sharing

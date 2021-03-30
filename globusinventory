@@ -2,21 +2,25 @@
 echo '{
     "GlobusNodes": [
         "globus.example.edu.au",
-        "globusresearchnetwork"
+        "globusresearchnetwork.example.edu.au"
     ],
     "_meta": {
         "hostvars": {
             "globus.example.edu.au": {
                 "ansible_host": "Put host IP here",
                 "ansible_user": "Put user here",
+                "endpoint_Name": "example",
                 "authorising_endpoint": "True",
-                "endpoint_Name": "example"
+                "myproxy_ServerBehindNAT": "True",
+                "oauth_ServerBehindNAT": "True"
             },
-            "globusresearchnetwork": {
+            "globusresearchnetwork.example.edu.au": {
                 "ansible_host": "Put host IP here",
                 "ansible_user": "Put user here",
+                "endpoint_Name": "researchnetwork",
                 "authorising_endpoint": "False",
-                "endpoint_Name": "researchnetwork"
+                "myproxy_ServerBehindNAT": "False",
+                "oauth_ServerBehindNAT": "False"
             },
         }
     }
