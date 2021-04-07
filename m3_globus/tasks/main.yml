@@ -206,16 +206,11 @@
   become_user: root
 
 - name: update logging config for rotation
-  lineinfile:
-    path: /etc/logrotate.d/globus-connect-server
-    regexp: '{{item.From}}'
-    line:   '{{item.To}}'
-    state: present
-  with_items:
-   - { From: '(/var/log/gridftp.log)', To: '/var/log/gridftp.log /var/log/gridftp_transfer.log'}
-   - { From: '(postrotate)', To: '(sharedscripts\n   postrotate)'}
-  become: yes
-  become_user: root
+  copy:
+    dest=/etc/logrotate.d/globus-connect-server
+    src=globus-connect-server
+    owner=root
+    mode=644
 
 # Setup OAuth login page for Example.edu.au
 - name: copy authorize.html for Example.edu.au branding

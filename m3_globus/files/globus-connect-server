@@ -1,0 +1,11 @@
+/var/log/gridftp.log /var/log/gridftp_transfer.log {
+   rotate 4
+   weekly
+   missingok
+   compress
+   create 644 root root
+   sharedscripts
+   postrotate
+       kill -HUP `cat /var/run/globus-gridftp-server.pid`
+   endscript
+}
