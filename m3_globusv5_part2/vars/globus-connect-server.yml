@@ -1,0 +1,23 @@
+---
+globus_subscription: True
+
+storage_gateway_DisplayName: "GatewayName"
+storage_gateway_AuthDomain: "example.edu.au"
+storage_gateway_TimeOut: "$((60 * 24 * 5))"
+storage_gateway_DestinationPathRestrictions: "/home/ec2-user/path-restrictions.json"
+storage_gateway_RestrictPaths: "file:/home/ec2-user/path-restrictions.json"
+storage_gateway_UserDeny: "--user-deny root"
+
+collection_BasePath: "/"
+collection_DisplayName: "CollectionName"
+collection_Organization: "Example Research Centre"
+collection_ContactEmail: "first.lastname@example.org.au"
+collection_InfoLink: "https://docs.example.org.au"
+collection_Description: "Access to your storage"
+collection_Keywords: "home,scratch,projects"
+collection_DestinationPathRestrictions: "/home/ec2-user/sharing-restrictions.json"
+collection_SharingRestrictPaths: "file:/home/ec2-user/sharing-restrictions.json"
+collection_SharingGroupAllow: "globusallow"
+collection_SharingGroupDeny: "globusdeny"
+collection_UserMessage: "Welcome to ExampleName"
+collection_UserMessageLink: "https://docs.example.org.au"

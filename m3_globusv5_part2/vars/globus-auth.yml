@@ -1,0 +1,4 @@
+---
+#globus-auth
+globus_clientId: Your_client_ID
+globus_clientSecret: "Your_client_secret"

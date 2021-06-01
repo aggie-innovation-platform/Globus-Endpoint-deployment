@@ -1,0 +1,68 @@
+- include_vars: globus-auth.yml
+- include_vars: globus-connect-server.yml
+
+# How to manage port configuration ?
+#  Port 50000 - 51000 inbound/outbound to/from Any.
+#  Port 443 inbound/outbound to/from Any
+
+# Adding Globus repository to yum
+- name: Install EPEL repo rpm
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: present
+  become: yes
+  become_user: root
+
+- name: install Globus toolkit latest repo
+  yum:
+    name: http://downloads.globus.org/toolkit/gt6/stable/installers/repo/rpm/globus-toolkit-repo-latest.noarch.rpm
+    state: present
+  become: yes
+  become_user: root
+
+- name: Enable repo Globus-Connect-Server-5-Stable
+  shell: yum-config-manager --enable Globus-Connect-Server-5-Stable
+  become: yes
+  become_user: root
+
+- name: Enable repo Globus-Toolkit-6-Stable
+  shell: yum-config-manager --enable Globus-Toolkit-6-Stable
+  become: yes
+  become_user: root
+
+# Installing globus-connect-server
+- name: Install globus-connect-server v5.4
+  yum:
+    name: globus-connect-server54
+    state: present
+    enablerepo: epel
+  become: yes
+  become_user: root
+
+#Note: root access is not required for this step.
+- name: Setup the endpoint, this creates the deployment-key.json file.
+  shell:  globus-connect-server endpoint setup "{{ endpoint_DisplayName }}" \
+           --organization "{{ endpoint_Organization }}" \
+           --client-id "{{ globus_clientId }}" \
+           --owner "{{ endpoint_Owner }}" \
+           --agree-to-letsencrypt-tos
+           --secret "{{ globus_clientSecret }}"
+
+- name: Start the globus server
+  shell: globus-connect-server node setup --client-id "{{ globus_clientId }}" \
+              --deployment-key "{{ endpoint_DeploymentKeyPath }}" \
+              --secret "{{ globus_clientSecret }}"
+  become: yes
+  become_user: root
+
+- name: Print message
+  debug:
+    msg:
+      - "This step must be completed manually. "
+      - ""
+      - "  ssh {{ inventory_hostname }}"
+      - "  sudo su - root"
+      - "  globus-connect-server login localhost "
+      - ""
+      - "Follow the instructions and authenticate with Globus"
+      - " Once complete, part 2 of this role can then be executed."

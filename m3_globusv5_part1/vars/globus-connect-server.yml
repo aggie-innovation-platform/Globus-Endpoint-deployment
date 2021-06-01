@@ -1,0 +1,5 @@
+---
+endpoint_DisplayName: "EndpointName"
+endpoint_Organization: "Example Research Centre"
+endpoint_Owner: "firstname.surname@example.org"
+endpoint_DeploymentKeyPath: "deployment-key.json"
