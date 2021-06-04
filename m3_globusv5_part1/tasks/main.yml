@@ -47,6 +47,8 @@
            --owner "{{ endpoint_Owner }}" \
            --agree-to-letsencrypt-tos
            --secret "{{ globus_clientSecret }}"
+  become: yes
+  become_user: root
 
 - name: Start the globus server
   shell: globus-connect-server node setup --client-id "{{ globus_clientId }}" \

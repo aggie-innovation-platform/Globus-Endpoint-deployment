@@ -1,14 +1,5 @@
-#!/bin/bash
-echo '{
-    "GlobusNodes": [
-        "globus.example.edu.au",
-    ],
-    "_meta": {
-        "hostvars": {
-            "globus.example.edu.au": {
-                "ansible_host": "Put host IP here",
-                "ansible_user": "Put user here"
-            }
-        }
-    }
-}'
+GlobusNodes:
+  hosts:
+    globus.example.edu.au:
+      ansible_user: "Put user here"
+      ansible_host: "Put host IP here"
