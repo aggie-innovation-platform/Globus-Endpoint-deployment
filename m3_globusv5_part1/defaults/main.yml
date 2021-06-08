@@ -1,4 +1,9 @@
 ---
+#globus-auth
+globus_clientId: Your_client_ID
+globus_clientSecret: "Your_client_secret"
+
+#globus-connect-server
 endpoint_DisplayName: "EndpointName"
 endpoint_Organization: "Example Research Centre"
 endpoint_Owner: "firstname.surname@example.org"

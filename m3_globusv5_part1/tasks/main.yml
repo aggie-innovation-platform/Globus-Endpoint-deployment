@@ -1,6 +1,3 @@
-- include_vars: globus-auth.yml
-- include_vars: globus-connect-server.yml
-
 # How to manage port configuration ?
 #  Port 50000 - 51000 inbound/outbound to/from Any.
 #  Port 443 inbound/outbound to/from Any
@@ -47,8 +44,13 @@
            --owner "{{ endpoint_Owner }}" \
            --agree-to-letsencrypt-tos
            --secret "{{ globus_clientSecret }}"
-  become: yes
-  become_user: root
+  when: "'PrimaryGlobusNode' in group_names"
+
+#Requires ssh access between nodes
+- name: Copy deployment-key.json across to secondary nodes.
+  shell: rsync "{{ hostvars[groups['PrimaryGlobusNode'][0]].ansible_host }}":deployment-key.json .
+  delegate_to: "{{ inventory_hostname }}"
+  when: "'SecondaryGlobusNodes' in group_names"
 
 - name: Start the globus server
   shell: globus-connect-server node setup --client-id "{{ globus_clientId }}" \
@@ -68,3 +70,4 @@
       - ""
       - "Follow the instructions and authenticate with Globus"
       - " Once complete, part 2 of this role can then be executed."
+  when: "'PrimaryGlobusNode' in group_names"

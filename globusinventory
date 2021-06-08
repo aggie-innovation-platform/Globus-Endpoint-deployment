@@ -1,5 +1,27 @@
-GlobusNodes:
+MainNode:
+  children:
+    PrimaryGlobusNode:
+      hosts:
+        globus.example.edu.au:
+          ansible_user: "Put user here"
+          ansible_host: "Put host IP here"
+    SecondaryGlobusNodes:
+      hosts:
+        globus1.example.edu.au:
+          ansible_user: "Put user here"
+          ansible_host: "Put host IP here"
+        globus2.example.edu.au:
+          ansible_user: "Put user here"
+          ansible_host: "Put host IP here"
+  vars:
+    globus_clientId: Your_client_ID
+    globus_clientSecret: "Your_client_secret"
+
+ResearchNetworkNode:
   hosts:
-    globus.example.edu.au:
+    globusresearchnetwork.example.edu.au:
       ansible_user: "Put user here"
       ansible_host: "Put host IP here"
+  vars:
+      globus_clientId: Your_client_ID
+      globus_clientSecret: "Your_client_secret"

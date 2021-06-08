@@ -41,11 +41,29 @@ To run the playbook to install Globus:
 You will be prompted to enter the password for ansible-vault.
 This will allow Ansible to decrypt the 'globus_clientSecret' during installation.
 
-After this role has successfully completed, please action the last message. You will need to login to the target machine and run 'globus-connect-server login localhost'.
+After this role has successfully completed, please action the last message. You
+will need to login to the target machine and run 'globus-connect-server login
+localhost'.
 
-Once globus-connect-server has been logged in to the localhost, please run the second role. This role will setup the storage-gateway and collection.
+Once globus-connect-server has been logged in to the localhost, please run the
+second role. This role will setup the storage-gateway and collection.
 
 > ansible-playbook  -i globusinventory -l GlobusNodes -t m3_globus_part2 globusnodes.yml --ask-vault-pass
+
+.. note::
+
+    Occasionally a http error 502 (Bad gateway) is returned when creating the
+    'collection' for the task m3_globus_part2.
+
+    To fix this login to the machine:
+      `sudo globus-connect-server storage-gateway list`
+      Using the storage-gateway ID, delete it
+      `sudo globus-connect-server storage-gateway delete ID`
+
+    Then re-run the second role. This will recreate the storage-gateway and the
+    collection. The ID of the storage-gateway is required to create the collection.
+    Alternatively, manually run the command for creating the collection. All
+    values can be obtained from the Ansible output.
 
 Role Variables
 --------------

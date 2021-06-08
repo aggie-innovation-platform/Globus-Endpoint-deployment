@@ -1,6 +1,17 @@
 
-- hosts: 'GlobusNodes'
+- hosts: 'PrimaryGlobusNode'
   gather_facts: False
   roles:
-  - { role: m3_globusv5_part1, tags: [ m3_globus_part1 ] }
-  - { role: m3_globusv5_part2, tags: [ m3_globus_part2 ] }
+    - { role: m3_globusv5_part1, tags: [ m3_globus_part1 ] }
+    - { role: m3_globusv5_part2, tags: [ m3_globus_part2 ] }
+
+- hosts: 'SecondaryGlobusNodes'
+  gather_facts: False
+  roles:
+    - { role: m3_globusv5_part1, tags: [ m3_globus_part1 ] }
+
+- hosts: 'ResearchNetworkNode'
+  gather_facts: False
+  roles:
+    - { role: m3_globusv5_part1, tags: [ m3_globus_part1 ] }
+    - { role: m3_globusv5_part2, tags: [ m3_globus_part2 ] }
