@@ -31,12 +31,22 @@ Example Inventory and Playbook
 
 This repository contains a sample Ansible inventory and playbook.
 
-The inventory file `globusinventory` is setup to create one endpoint,
-storage-gateway and collection on a single machine.
+The inventory file `globusinventory` is setup to cater for three different configurations.
+- Configuration 1: create one endpoint, storage-gateway and collection on a single machine indentified under 'PrimaryGlobusNode'
+- Configuration 2: create secondary nodes for load balancing the 'PrimaryGlobusNode'
+- Configuration 3: create another endpoint, storage-gateway and collection supporting an internal private network. Referred to as the 'globusresearchnetwork'
 
-To run the playbook to install Globus:
+Where required for your setup, alter the inventory to override the role default values.
 
-> ansible-playbook  -i globusinventory -l GlobusNodes -t m3_globus_part1 globusnodes.yml --ask-vault-pass
+Before running the playbooks review and update the ansible roles, playbook and inventory for your site.
+Role variables are described at the bottom of this page.
+
+Configuration 1:
+****************
+
+To run the playbook:
+
+> ansible-playbook -v -i globusinventory -l PrimaryGlobusNode -t m3_globus_part1 globusnodes.yml --ask-vault-pass
 
 You will be prompted to enter the password for ansible-vault.
 This will allow Ansible to decrypt the 'globus_clientSecret' during installation.
@@ -48,7 +58,7 @@ localhost'.
 Once globus-connect-server has been logged in to the localhost, please run the
 second role. This role will setup the storage-gateway and collection.
 
-> ansible-playbook  -i globusinventory -l GlobusNodes -t m3_globus_part2 globusnodes.yml --ask-vault-pass
+> ansible-playbook -v -i globusinventory -l PrimaryGlobusNode -t m3_globus_part2 globusnodes.yml --ask-vault-pass
 
 .. note::
 
@@ -65,23 +75,40 @@ second role. This role will setup the storage-gateway and collection.
     Alternatively, manually run the command for creating the collection. All
     values can be obtained from the Ansible output.
 
+Configuration 2:
+****************
+
+If your Globus node is to be installed on several machines for load balancing run configuration 2 next.
+
+> ansible-playbook -v -i globusinventory -l SecondaryGlobusNodes globusnodes.yml --ask-vault-pass
+
+Ensure you can ssh between machines. This play will attempt to rsync the file 'deployment-key.json'
+from the primary globus node across to the secondary globus node.
+
+Configuration 3:
+****************
+
+
 Role Variables
 --------------
 
 The following variables should be set prior to running the role m3_globus_part1.
 
-- m3_globus_part1/vars/globus-auth.yml - Globus account login
+- m3_globus_part1/defaults/main.yml
   - globus_clientId: clientID
   - globus_clientSecret: clientSecret
 
-To obtain the clientID and clientSecret:
-- open https://developers.globus.org
-- click on 'Register a new Globus Connect Server v5'
-- Add another project.
-- For that new project, click on 'Add New Globus Connect Server'. This will
-display the Client ID.
-- Click on 'Generate New Client Secret'. This will display the 'Client Secret'
-- encrypt the 'Client Secret' using the below instructions
+It is recommended that the globus_clientId and globus_clientSecret be set in the 'globusinventory' file.
+The inventory file overrides role defaults. The same client ID and secret is required for configurations 1 and 2.
+A new client ID and secret is required for configuration 3.
+
+> NOTE: To obtain the clientID and clientSecret:
+> - open https://developers.globus.org
+> - click on 'Register a new Globus Connect Server v5'
+> - Add another project.
+> - For that new project, click on 'Add New Globus Connect Server'. This will display the Client ID.
+> - Click on 'Generate New Client Secret'. This will display the 'Client Secret'
+> - encrypt the 'Client Secret' using the below instructions
 
 
 > NOTE: the variable ```globus_clientSecret``` should be encrypted using
@@ -108,7 +135,7 @@ globus_clientSecret: !vault |
 > When running the playbook, use the option ```--ask-vault-pass```. This will
 > prompt Ansible to ask for the password to decrypt your Globus password.
 
-- m3_globus_part1/vars/globus-connect-server.yml
+- m3_globus_part1/defaults/main.yml
   - endpoint_DisplayName: the name of your Endpoint.
   - endpoint_Organization: the organisation responsible for the Endpoint.
   - endpoint_Owner: globus login email address.
@@ -117,10 +144,7 @@ globus_clientSecret: !vault |
 
 The following variables should be set prior to running the role m3_globus_part2.
 
-- m3_globus_part2/vars/globus-auth.yml
-  - use the same values as for part1. e.g. just copy in the file.
-
-- m3_globus_part2/vars/globus-connect-server.yml
+- m3_globus_part2/defaults/main.yml
   - globus_subscription: if you have a Globus Subscription that is attached to
   the endpoint_Owner set this the 'True', otherwise 'False'
   - storage_gateway_DisplayName: the name of your storage gateway
