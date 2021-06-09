@@ -39,10 +39,9 @@ The inventory file `globusinventory` is setup to cater for three different confi
 Where required for your setup, alter the inventory to override the role default values.
 
 Before running the playbooks review and update the ansible roles, playbook and inventory for your site.
-Role variables are described at the bottom of this page.
+`Role Variables` are described at the bottom of this page and includes setup details.
 
-Configuration 1:
-****************
+### Configuration 1:
 
 To run the playbook:
 
@@ -75,8 +74,7 @@ second role. This role will setup the storage-gateway and collection.
     Alternatively, manually run the command for creating the collection. All
     values can be obtained from the Ansible output.
 
-Configuration 2:
-****************
+### Configuration 2:
 
 If your Globus node is to be installed on several machines for load balancing run configuration 2 next.
 
@@ -85,8 +83,43 @@ If your Globus node is to be installed on several machines for load balancing ru
 Ensure you can ssh between machines. This play will attempt to rsync the file 'deployment-key.json'
 from the primary globus node across to the secondary globus node.
 
-Configuration 3:
-****************
+### Configuration 3:
+
+Configuration 3 is the same as configuration 1, but with some of the configuration values overridden.
+
+You will need to create an new client ID and client secret as this is a completely separate node. See `Role Variables`
+below on how to obtain these.
+
+Update the `globusinventory` file to override any required values in the role to distinguish the deployment
+of this ResearchNode from the MainNode. In the sample provided the following values have been overridden: 'globus_clientId', 'globus_clientSecret',
+'storage_gateway_DisplayName', and 'collection_DisplayName'.
+
+To execute, run as separate commands, just like for configuration 1. Don't forget to login to Globus on the host prior to running 
+the second role.
+
+> ansible-playbook -v -i globusinventory -l ResearchNetworkNode -t m3_globus_part1 globusnodes.yml --ask-vault-pass
+
+> ansible-playbook -v -i globusinventory -l ResearchNetworkNode -t m3_globus_part2 globusnodes.yml --ask-vault-pass
+
+Cleaning up an Installation
+---------------------------
+
+```
+WARNING: if you are planning on removing a Globus V5.4 installation, complete the following first. 
+Otherwise you can be left with orphaned Endpoints and Collections in the web application that you
+cannont remove on your own.
+```
+
+During the development of these Ansible scripts, unfortunately some orphaned Endpoints and Collections were created
+that couldn't be removed. Globus Support was contacted to assist with this.
+
+To prevent this problem the following commands will perform the cleanup for you.
+
+1) Run the following command on all nodes in the endpoint:
+    `globus-connect-server node cleanup`
+    
+2) Run the following command once on any node in the endpoint after step 1 is complete:
+    `globus-connect-server endpoint cleanup --client-id YOUR_CLIENT_ID --deployment-key /path/to/your/deployment-key.json`
 
 
 Role Variables
