@@ -1,27 +1,30 @@
-#!/bin/bash
-echo '{
-    "GlobusNodes": [
-        "globus.example.edu.au",
-        "globusresearchnetwork.example.edu.au"
-    ],
-    "_meta": {
-        "hostvars": {
-            "globus.example.edu.au": {
-                "ansible_host": "Put host IP here",
-                "ansible_user": "Put user here",
-                "endpoint_Name": "example",
-                "authorising_endpoint": "True",
-                "myproxy_ServerBehindNAT": "True",
-                "oauth_ServerBehindNAT": "True"
-            },
-            "globusresearchnetwork.example.edu.au": {
-                "ansible_host": "Put host IP here",
-                "ansible_user": "Put user here",
-                "endpoint_Name": "researchnetwork",
-                "authorising_endpoint": "False",
-                "myproxy_ServerBehindNAT": "False",
-                "oauth_ServerBehindNAT": "False"
-            },
-        }
-    }
-}'
+MainNode:
+  children:
+    PrimaryGlobusNode:
+      hosts:
+        globus.example.edu.au:
+          ansible_user: "Put user here"
+          ansible_host: "Put host IP here"
+    SecondaryGlobusNodes:
+      hosts:
+        globus1.example.edu.au:
+          ansible_user: "Put user here"
+          ansible_host: "Put host IP here"
+        globus2.example.edu.au:
+          ansible_user: "Put user here"
+          ansible_host: "Put host IP here"
+  vars:
+    globus_clientId: Your_client_ID
+    globus_clientSecret: "Your_client_secret"
+
+ResearchNetworkNode:
+  hosts:
+    globusresearchnetwork.example.edu.au:
+      ansible_user: "Put user here"
+      ansible_host: "Put host IP here"
+  vars:
+      globus_clientId: Your_client_ID
+      globus_clientSecret: "Your_client_secret"
+      endpoint_DisplayName: "Globus Research Network"
+      storage_gateway_DisplayName: "Globus Research Network"
+      collection_DisplayName: "Globus Research Network"

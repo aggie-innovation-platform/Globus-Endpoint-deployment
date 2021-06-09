@@ -1,0 +1,75 @@
+- name: Print message
+  debug:
+    msg: " Continuing part 2 of Globus-v5 installation. "
+
+- name: Set the endpoint as managed. Requires a Globus subscription
+  shell: globus-connect-server endpoint set-subscription-id DEFAULT
+  when: globus_subscription == True
+  become: yes
+  become_user: root
+
+# Setup storage-gateway path restrictions.
+- name: copy path-restrictions.json to manage the path restrictions for the gateway.
+  copy:
+    src=path-restrictions.json
+    dest="{{ storage_gateway_DestinationPathRestrictions }}"
+    mode=644
+  become: yes
+  become_user: root
+
+- name: Create a POSIX Storage gateway, capture the gateway ID as output.
+  shell: globus-connect-server storage-gateway create posix \
+         "{{ storage_gateway_DisplayName }}" \
+         --domain "{{ storage_gateway_AuthDomain }}" \
+         --authentication-timeout-mins "{{ storage_gateway_TimeOut }}" \
+         --restrict-paths "{{ storage_gateway_RestrictPaths }}"
+  register: gateway_results
+  become: yes
+  become_user: root
+
+#Need to capture the Storage Gateway ID
+- name: capture the Storage Gateway ID
+  set_fact:
+    storage_gateway_ID: "{{ gateway_results.stdout.split(': ')[1] }}"
+
+- name: Output storage-gateway-ID
+  debug:
+    var: storage_gateway_ID
+
+# Setup collecion sharing path restrictions.
+- name: copy sharing-restrictions.json to manage the path restrictions for the collection.
+  copy:
+    src=sharing-restrictions.json
+    dest="{{ collection_DestinationPathRestrictions }}"
+    mode=644
+  become: yes
+  become_user: root
+
+- pause:
+    minutes: 1
+
+- name: Create the collection
+  shell: globus-connect-server collection create "{{ storage_gateway_ID }}" \
+            "{{ collection_BasePath }}" "{{ collection_DisplayName }}" \
+            --organization "{{ collection_Organization }}" \
+            --contact-email "{{ collection_ContactEmail }}" \
+            --info-link "{{ collection_InfoLink }}" \
+            --description "{{ collection_Description }}" \
+            --keywords "{{ collection_Keywords }}" \
+            --allow-guest-collections \
+            --sharing-restrict-paths "{{ collection_SharingRestrictPaths }}" \
+            --posix-sharing-group-allow "{{ collection_SharingGroupAllow }}" \
+            --posix-sharing-group-deny "{{ collection_SharingGroupDeny }}" \
+            --user-message "{{ collection_UserMessage }}" \
+            --user-message-link "{{ collection_UserMessageLink }}"
+  register: collection_results
+  become: yes
+  become_user: root
+
+- name: capture the Collection ID
+  set_fact:
+    collection_ID: "{{ collection_results.stdout.split(': ')[1] }}"
+
+- name: Output collection_ID
+  debug:
+    var: collection_ID
