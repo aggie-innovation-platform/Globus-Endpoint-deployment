@@ -116,9 +116,11 @@ that couldn't be removed. Globus Support was contacted to assist with this.
 To prevent this problem the following commands will perform the cleanup for you.
 
 1) Run the following command on all nodes in the endpoint:
+
     `globus-connect-server node cleanup`
     
 2) Run the following command once on any node in the endpoint after step 1 is complete:
+
     `globus-connect-server endpoint cleanup --client-id YOUR_CLIENT_ID --deployment-key /path/to/your/deployment-key.json`
 
 
