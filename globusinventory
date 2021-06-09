@@ -25,3 +25,6 @@ ResearchNetworkNode:
   vars:
       globus_clientId: Your_client_ID
       globus_clientSecret: "Your_client_secret"
+      endpoint_DisplayName: "Globus Research Network"
+      storage_gateway_DisplayName: "Globus Research Network"
+      collection_DisplayName: "Globus Research Network"

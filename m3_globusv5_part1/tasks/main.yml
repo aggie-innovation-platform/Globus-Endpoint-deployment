@@ -44,7 +44,7 @@
            --owner "{{ endpoint_Owner }}" \
            --agree-to-letsencrypt-tos
            --secret "{{ globus_clientSecret }}"
-  when: "'PrimaryGlobusNode' in group_names"
+  when: "'SecondaryGlobusNodes' not in group_names"
 
 #Requires ssh access between nodes
 - name: Copy deployment-key.json across to secondary nodes.
@@ -70,4 +70,4 @@
       - ""
       - "Follow the instructions and authenticate with Globus"
       - " Once complete, part 2 of this role can then be executed."
-  when: "'PrimaryGlobusNode' in group_names"
+  when: "'SecondaryGlobusNodes' not in group_names"
