@@ -3,9 +3,26 @@
 #  Port 443 inbound/outbound to/from Any
 
 # Adding Globus repository to yum
+- name: Install EPEL repo rpm key
+  rpm_key:
+    key: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8"
+    state: present
+  become: yes
+  become_user: root
+
 - name: Install EPEL repo rpm
   yum:
-    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    state: present
+  become: yes
+  become_user: root
+
+- name: Install required utils
+  yum:
+    name:
+      - yum-utils # For yum-config-manager
+      - htop      # Beacuse how can anyone live without it?
+      - rsync     # For copying deployment-key.json
     state: present
   become: yes
   become_user: root
@@ -14,6 +31,8 @@
   yum:
     name: http://downloads.globus.org/toolkit/gt6/stable/installers/repo/rpm/globus-toolkit-repo-latest.noarch.rpm
     state: present
+    # Until I can find this
+    disable_gpg_check: True
   become: yes
   become_user: root
 
