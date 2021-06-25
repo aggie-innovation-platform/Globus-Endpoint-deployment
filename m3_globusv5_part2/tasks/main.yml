@@ -24,7 +24,8 @@
          --authentication-timeout-mins "{{ storage_gateway_TimeOut }}" \
          --restrict-paths "{{ storage_gateway_RestrictPaths }}" \
          {{ '--high-assurance' if storage_gateway_HighAssurance else '' }} \
-         {{ '--mfa' if storage_gateway_MFA else '--no-mfa' }}
+         {{ '--mfa' if storage_gateway_MFA else '--no-mfa' }} \
+         {{ ['--identity-mapping'] | product(storage_gateway_IdentityMappings | map('quote')) | map('join', ' ') | list | join(' ') }}
   register: gateway_results
   become: yes
   become_user: root

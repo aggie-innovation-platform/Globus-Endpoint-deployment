@@ -194,6 +194,7 @@ The following variables should be set prior to running the role m3_globus_part2.
   - storage_gateway_UserDeny: Used to disable system users. e.g. "--user-deny root"
   - storage_gateway_HighAssurance: is the storage gateway high assurance? Requires a subscription.
   - storage_gateway_MFA: is MFA required on the gateway?
+  - storage_gateway_IdentityMappings: A list of identity mappings. These are passed directly to the `--identity-mapping` parameter.
   - collection_BasePath: "/"
   - collection_DisplayName: the name of your collection
   - collection_Organization: the organisation responsible for the collection

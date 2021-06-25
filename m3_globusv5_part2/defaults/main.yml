@@ -14,6 +14,7 @@ storage_gateway_RestrictPaths: "file:/home/ec2-user/path-restrictions.json"
 storage_gateway_UserDeny: "--user-deny root"
 storage_gateway_HighAssurance: false
 storage_gateway_MFA: false
+storage_gateway_IdentityMappings: []
 
 collection_BasePath: "/"
 collection_DisplayName: "CollectionName"
