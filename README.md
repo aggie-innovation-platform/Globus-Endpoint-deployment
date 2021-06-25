@@ -192,6 +192,7 @@ The following variables should be set prior to running the role m3_globus_part2.
   - storage_gateway_RestrictPaths: the full path on the target machine to the file
   'path-restrictions.json'. e.g. "file:/home/ec2-user/path-restrictions.json"
   - storage_gateway_UserDeny: Used to disable system users. e.g. "--user-deny root"
+  - storage_gateway_HighAssurance: is the storage gateway high assurance? Requires a subscription.
   - collection_BasePath: "/"
   - collection_DisplayName: the name of your collection
   - collection_Organization: the organisation responsible for the collection

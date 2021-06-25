@@ -22,7 +22,8 @@
          "{{ storage_gateway_DisplayName }}" \
          {{ ['--domain'] | product(storage_gateway_AuthDomains | map('quote')) | map('join', ' ') | list | join(' ') }} \
          --authentication-timeout-mins "{{ storage_gateway_TimeOut }}" \
-         --restrict-paths "{{ storage_gateway_RestrictPaths }}"
+         --restrict-paths "{{ storage_gateway_RestrictPaths }}" \
+         {{ '--high-assurance' if storage_gateway_HighAssurance else '' }}
   register: gateway_results
   become: yes
   become_user: root
