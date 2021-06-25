@@ -183,7 +183,7 @@ The following variables should be set prior to running the role m3_globus_part2.
   - globus_subscription: if you have a Globus Subscription that is attached to
   the endpoint_Owner set this the 'True', otherwise 'False'
   - storage_gateway_DisplayName: the name of your storage gateway
-  - storage_gateway_AuthDomain: the domain used for user authentication
+  - storage_gateway_AuthDomains: the list of domains used for user authentication
   - storage_gateway_TimeOut: the time period that a gateway should be activated
   for, once authenticated e.g.  "$((60 * 24 * 5))" i.e. 5 days.
   - storage_gateway_DestinationPathRestrictions: This is the destination where
