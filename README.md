@@ -229,4 +229,5 @@ The above configuration is an example. Please read the following to better under
 Author Information
 ------------------
 
-Jay van Schyndel - Monash eResearch Centre
+* Jay van Schyndel - Monash eResearch Centre
+* Zane van Iperen  - UQ Research Computing Centre
