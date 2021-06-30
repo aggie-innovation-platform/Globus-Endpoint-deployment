@@ -11,7 +11,6 @@ storage_gateway_AuthDomains:
 storage_gateway_TimeOut: "$((60 * 24 * 5))"
 storage_gateway_DestinationPathRestrictions: "/home/ec2-user/path-restrictions.json"
 storage_gateway_RestrictPaths: "file:/home/ec2-user/path-restrictions.json"
-storage_gateway_UserDeny: "--user-deny root"
 storage_gateway_HighAssurance: false
 storage_gateway_MFA: false
 storage_gateway_IdentityMappings: []
