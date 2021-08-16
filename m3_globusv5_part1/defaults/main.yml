@@ -1,10 +1,10 @@
 ---
 #globus-auth
-globus_clientId: Your_client_ID
-globus_clientSecret: "Your_client_secret"
+globus_clientId: fae7ac38-ef57-4f2e-94cf-d54936086caa
+globus_clientSecret: "QDxtVEEshE9gYidP6dAgORHU/Oi/N2pBvDiVnMDrSZE="
 
 #globus-connect-server
-endpoint_DisplayName: "EndpointName"
-endpoint_Organization: "Example Research Centre"
-endpoint_Owner: "firstname.surname@example.org"
+endpoint_DisplayName: "TAMU AIP DTN"
+endpoint_Organization: "Texas A & M University"
+endpoint_Owner: "soren@tamu.edu"
 endpoint_DeploymentKeyPath: "deployment-key.json"

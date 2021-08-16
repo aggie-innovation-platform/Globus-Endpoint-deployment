@@ -2,9 +2,11 @@ MainNode:
   children:
     PrimaryGlobusNode:
       hosts:
-        globus.example.edu.au:
-          ansible_user: "Put user here"
-          ansible_host: "Put host IP here"
+        dtn.perfsonar.cloud.tamu.edu:
+          ansible_user: "centos"
+          ansible_host: "3.81.27.30"
+          #ansible_ssh_user: "centos"
+          ansible_ssh_private_key_file: "../tf-aws-packer-globus/instances/tf_globus_rsa.pem"
     SecondaryGlobusNodes:
       hosts:
         globus1.example.edu.au:
@@ -14,8 +16,8 @@ MainNode:
           ansible_user: "Put user here"
           ansible_host: "Put host IP here"
   vars:
-    globus_clientId: Your_client_ID
-    globus_clientSecret: "Your_client_secret"
+    globus_clientId: fae7ac38-ef57-4f2e-94cf-d54936086caa
+    globus_clientSecret: "QDxtVEEshE9gYidP6dAgORHU/Oi/N2pBvDiVnMDrSZE="
 
 ResearchNetworkNode:
   hosts:

@@ -38,7 +38,7 @@
 
 #Note: root access is not required for this step.
 - name: Setup the endpoint, this creates the deployment-key.json file.
-  shell:  globus-connect-server endpoint setup "{{ endpoint_DisplayName }}" \
+  shell:  /usr/sbin/globus-connect-server endpoint setup "{{ endpoint_DisplayName }}" \
            --organization "{{ endpoint_Organization }}" \
            --client-id "{{ globus_clientId }}" \
            --owner "{{ endpoint_Owner }}" \
@@ -53,7 +53,7 @@
   when: "'SecondaryGlobusNodes' in group_names"
 
 - name: Start the globus server
-  shell: globus-connect-server node setup --client-id "{{ globus_clientId }}" \
+  shell: /usr/sbin/globus-connect-server node setup --client-id "{{ globus_clientId }}" \
               --deployment-key "{{ endpoint_DeploymentKeyPath }}" \
               --secret "{{ globus_clientSecret }}"
   become: yes
@@ -66,7 +66,7 @@
       - ""
       - "  ssh {{ inventory_hostname }}"
       - "  sudo su - root"
-      - "  globus-connect-server login localhost "
+      - "  /usr/sbin/globus-connect-server login localhost "
       - ""
       - "Follow the instructions and authenticate with Globus"
       - " Once complete, part 2 of this role can then be executed."
