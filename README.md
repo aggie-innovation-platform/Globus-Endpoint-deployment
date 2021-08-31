@@ -183,7 +183,7 @@ The following variables should be set prior to running the role m3_globus_part2.
   - globus_subscription: if you have a Globus Subscription that is attached to
   the endpoint_Owner set this the 'True', otherwise 'False'
   - storage_gateway_DisplayName: the name of your storage gateway
-  - storage_gateway_AuthDomain: the domain used for user authentication
+  - storage_gateway_AuthDomains: the list of domains used for user authentication
   - storage_gateway_TimeOut: the time period that a gateway should be activated
   for, once authenticated e.g.  "$((60 * 24 * 5))" i.e. 5 days.
   - storage_gateway_DestinationPathRestrictions: This is the destination where
@@ -192,6 +192,9 @@ The following variables should be set prior to running the role m3_globus_part2.
   - storage_gateway_RestrictPaths: the full path on the target machine to the file
   'path-restrictions.json'. e.g. "file:/home/ec2-user/path-restrictions.json"
   - storage_gateway_UserDeny: Used to disable system users. e.g. "--user-deny root"
+  - storage_gateway_HighAssurance: is the storage gateway high assurance? Requires a subscription.
+  - storage_gateway_MFA: is MFA required on the gateway?
+  - storage_gateway_IdentityMappings: A list of identity mappings. These are passed directly to the `--identity-mapping` parameter.
   - collection_BasePath: "/"
   - collection_DisplayName: the name of your collection
   - collection_Organization: the organisation responsible for the collection
@@ -226,4 +229,5 @@ The above configuration is an example. Please read the following to better under
 Author Information
 ------------------
 
-Jay van Schyndel - Monash eResearch Centre
+* Jay van Schyndel - Monash eResearch Centre
+* Zane van Iperen  - UQ Research Computing Centre
