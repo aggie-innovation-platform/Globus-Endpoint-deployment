@@ -3,16 +3,30 @@
 #  Port 443 inbound/outbound to/from Any
 
 # Adding Globus repository to yum
-- name: Install EPEL repo rpm key
-  rpm_key:
-    key: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8"
+#- name: Install EPEL repo rpm key
+#  rpm_key:
+#    key: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8"
+#    state: present
+#  become: yes
+#  become_user: root
+
+- name: Install EPEL repo rpm
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
     state: present
   become: yes
   become_user: root
 
-- name: Install EPEL repo rpm
+#- name: Install EPEL repo rpm
+#  yum:
+#    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+#    state: present
+#  become: yes
+#  become_user: root
+
+- name: install Globus toolkit latest repo
   yum:
-    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    name: http://downloads.globus.org/toolkit/gt6/stable/installers/repo/rpm/globus-toolkit-repo-latest.noarch.rpm
     state: present
   become: yes
   become_user: root
@@ -57,11 +71,11 @@
 
 #Note: root access is not required for this step.
 - name: Setup the endpoint, this creates the deployment-key.json file.
-  shell:  globus-connect-server endpoint setup "{{ endpoint_DisplayName }}" \
+  shell:  /usr/sbin/globus-connect-server endpoint setup "{{ endpoint_DisplayName }}" \
            --organization "{{ endpoint_Organization }}" \
            --client-id "{{ globus_clientId }}" \
            --owner "{{ endpoint_Owner }}" \
-           --agree-to-letsencrypt-tos
+           --agree-to-letsencrypt-tos \
            --secret "{{ globus_clientSecret }}"
   when: "'SecondaryGlobusNodes' not in group_names"
 
@@ -72,8 +86,9 @@
   when: "'SecondaryGlobusNodes' in group_names"
 
 - name: Start the globus server
-  shell: globus-connect-server node setup --client-id "{{ globus_clientId }}" \
+  shell: /usr/sbin/globus-connect-server node setup --client-id "{{ globus_clientId }}" \
               --deployment-key "{{ endpoint_DeploymentKeyPath }}" \
+              --ip-address "{{ hostvars[groups['PrimaryGlobusNode'][0]].ansible_host }}"
               --secret "{{ globus_clientSecret }}"
   become: yes
   become_user: root
@@ -85,7 +100,7 @@
       - ""
       - "  ssh {{ inventory_hostname }}"
       - "  sudo su - root"
-      - "  globus-connect-server login localhost "
+      - "  /usr/sbin/globus-connect-server login localhost "
       - ""
       - "Follow the instructions and authenticate with Globus"
       - " Once complete, part 2 of this role can then be executed."

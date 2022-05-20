@@ -4,7 +4,7 @@ globus_clientId: Your_client_ID
 globus_clientSecret: "Your_client_secret"
 
 #globus-connect-server
-endpoint_DisplayName: "EndpointName"
-endpoint_Organization: "Example Research Centre"
-endpoint_Owner: "firstname.surname@example.org"
+endpoint_DisplayName: "TAMU AIP Azure Globus Connect Server"
+endpoint_Organization: 'Texas A&M University Aggie Innovation Platform'
+endpoint_Owner: "soren@tamu.edu"
 endpoint_DeploymentKeyPath: "deployment-key.json"

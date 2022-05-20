@@ -2,6 +2,12 @@
   debug:
     msg: " Continuing part 2 of Globus-v5 installation. "
 
+- name: Show secret
+  shell: echo "{{ globus_clientSecret }}"
+  when: globus_subscription == True
+  become: yes
+  become_user: root
+
 - name: Set the endpoint as managed. Requires a Globus subscription
   shell: globus-connect-server endpoint set-subscription-id DEFAULT
   when: globus_subscription == True

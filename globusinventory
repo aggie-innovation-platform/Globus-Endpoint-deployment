@@ -2,29 +2,25 @@ MainNode:
   children:
     PrimaryGlobusNode:
       hosts:
-        globus.example.edu.au:
-          ansible_user: "Put user here"
-          ansible_host: "Put host IP here"
+        azure-globus-connect-server1.globus.cloud.tamu.edu:
+          ansible_user: "centos"
+          ansible_host: "70.37.65.179"
+          #ansible_ssh_user: "centos"
+          ansible_ssh_private_key_file: "/Users/soren/.ssh/globus"
     SecondaryGlobusNodes:
       hosts:
-        globus1.example.edu.au:
-          ansible_user: "Put user here"
-          ansible_host: "Put host IP here"
-        globus2.example.edu.au:
-          ansible_user: "Put user here"
-          ansible_host: "Put host IP here"
+        azure-globus-connect-server2.globus.cloud.tamu.edu:
+          ansible_user: "centos"
+          ansible_host: "23.98.148.90"
+          ansible_ssh_user: "centos"
+          ansible_ssh_private_key_file: "/Users/soren/.ssh/globus"
   vars:
-    globus_clientId: Your_client_ID
-    globus_clientSecret: "Your_client_secret"
-
-ResearchNetworkNode:
-  hosts:
-    globusresearchnetwork.example.edu.au:
-      ansible_user: "Put user here"
-      ansible_host: "Put host IP here"
-  vars:
-      globus_clientId: Your_client_ID
-      globus_clientSecret: "Your_client_secret"
-      endpoint_DisplayName: "Globus Research Network"
-      storage_gateway_DisplayName: "Globus Research Network"
-      collection_DisplayName: "Globus Research Network"
+    globus_clientId: 04a21077-d79b-4fa0-8779-5f08c59d645c
+    globus_clientSecret: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          32386237613032646362653934303237376665636631623166393233393463616336383635303836
+          6535633530333834623132366432333763666333633265380a666230393361613862376639306363
+          30356237643630633535333964373734346639383233396666376633616566333939376333333632
+          3565393136373734360a343533313437356337386536666439316265333662636131343434336239
+          32643331303232646461383461613134306366333962323563396439356361646130626539326264
+          6161336263383632313164316232663437613639396565376134
